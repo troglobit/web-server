@@ -73,42 +73,21 @@ jobs:
 
     - name: Extract version from tag
       id: extract_version
-      run: echo "::set-output name=version::${GITHUB_REF#refs/tags/}"
+      run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
     - name: Generate Changelog
       id: generate_changelog
       run: |
-        echo "## Changes" > CHANGELOG.md
-        git log $(git describe --tags --abbrev=0 @^)..@ --pretty=format:"%h - %s (%an, %ad)" --date=short >> CHANGELOG.md
+        echo "## Changes" > release.md
+        git log $(git describe --tags --abbrev=0 @^)..@ --pretty=format:"%h - %s (%an, %ad)" --date=short >> release.md
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create and Upload Release
+      uses: ncipollo/release-action@v1
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        body_path: CHANGELOG.md
-        draft: false
-        prerelease: false
-
-    - name: Upload Windows artifact
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: dist/webby.exe
-        asset_name: webby_windows.exe
-        asset_content_type: application/octet-stream
-
-    - name: Upload Linux artifact
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: dist/webby
-        asset_name: webby_linux
-        asset_content_type: application/octet-stream
+        name: Webby v${{ env.version }}
+        tag: ${{ github.ref }}
+        bodyFile: release.md
+        artifacts: |
+          dist/webby.exe
+          dist/webby
+        token: ${{ secrets.GITHUB_TOKEN }}
