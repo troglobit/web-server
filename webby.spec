@@ -4,17 +4,25 @@ import os
 import sys
 from PyInstaller.building.build_main import Analysis, PYZ, EXE, COLLECT
 
-# Platform-specific pathex
+# Ensure WINDIR is set
+windir = os.environ.get('WINDIR', 'C:\\Windows')
+system32 = os.path.join(windir, 'System32')
+
+# Platform-specific pathex and binaries
 if sys.platform == 'win32':
-    windir = os.environ.get('WINDIR', 'C:\\Windows')
-    pathex = [os.path.join(windir, 'System32')]
+    pathex = [system32]
+    binaries = [
+        (os.path.join(system32, 'api-ms-win-core-path-l1-1-0.dll'), '.'),
+        (os.path.join(system32, 'python312.dll'), '.')
+    ]
 else:
     pathex = []
+    binaries = []
 
 a = Analysis(
     ['webby.py'],
     pathex=pathex,
-    binaries=[],
+    binaries=binaries,
     datas=[],
     hiddenimports=[],
     hookspath=[],
@@ -34,7 +42,7 @@ exe = EXE(
     name='webby',
     debug=False,
     bootloader_ignore_signals=False,
-    strip=False,
+    strip=True,
     upx=True,
     upx_exclude=[],
     runtime_tmpdir=None,
@@ -51,7 +59,7 @@ coll = COLLECT(
     a.binaries,
     a.zipfiles,
     a.datas,
-    strip=False,
+    strip=True,
     upx=True,
     upx_exclude=[],
     name='webby',
