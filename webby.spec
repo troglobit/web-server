@@ -1,8 +1,19 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+import os
+import sys
+from PyInstaller.building.build_main import Analysis, PYZ, EXE, COLLECT
+
+# Platform-specific pathex
+if sys.platform == 'win32':
+    windir = os.environ.get('WINDIR', 'C:\\Windows')
+    pathex = [os.path.join(windir, 'System32')]
+else:
+    pathex = []
+
 a = Analysis(
     ['webby.py'],
-    pathex=[],
+    pathex=pathex,
     binaries=[],
     datas=[],
     hiddenimports=[],
