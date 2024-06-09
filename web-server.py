@@ -146,10 +146,13 @@ class App(ctk.CTk):
         if not directory:
             self.status_label.configure(text="No directory selected!")
             return
-        self.server, self.server_address = start_server(ip, port, directory)
-        self.status_label.configure(text=f"Server running at {self.server_address[0]}:{self.server_address[1]}")
-        self.start_button.configure(state=tk.DISABLED)
-        self.stop_button.configure(state=tk.NORMAL)
+        try:
+            self.server, self.server_address = start_server(ip, port, directory)
+            self.status_label.configure(text=f"Server running at {self.server_address[0]}:{self.server_address[1]}")
+            self.start_button.configure(state=tk.DISABLED)
+            self.stop_button.configure(state=tk.NORMAL)
+        except Exception as err:
+            self.status_label.configure(text=f"Failed {err}")
 
     def stop_server(self):
         if self.server:
