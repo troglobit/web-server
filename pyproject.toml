@@ -1,0 +1,11 @@
+[build-system]
+requires = ["setuptools", "setuptools_scm", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "webby"
+dynamic = ["version", "dependencies"]
+
+[tool.setuptools.dynamic]
+version = { use_scm_version = true }
+dependencies = { file = "requirements.txt" }

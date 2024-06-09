@@ -14,6 +14,18 @@ import customtkinter as ctk
 from http.server import SimpleHTTPRequestHandler
 from socketserver import TCPServer
 import psutil
+import sys
+
+try:
+    from importlib.metadata import version, PackageNotFoundError
+except ImportError:  # for Python<3.8
+    from importlib_metadata import version, PackageNotFoundError
+
+def get_version():
+    try:
+        return version("webby")
+    except PackageNotFoundError:
+        return "0.0.0"
 
 class ThreadedTCPServer(TCPServer):
     allow_reuse_address = True
@@ -58,14 +70,17 @@ def start_server(ip, port, directory):
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title("Web Server")
+
+        self.version = get_version()
+        self.title(f"Webby v{self.version}")
         self.geometry("340x300")
         self.resizable(False, False)  # Set fixed window size
 
         self.main_frame = ctk.CTkFrame(self)
         self.main_frame.pack(padx=10, pady=10, fill="both", expand=True)
 
-        self.label = ctk.CTkLabel(self.main_frame, text="Web Server",
+        self.label = ctk.CTkLabel(self.main_frame,
+                                  text=f"Webby v{self.version}",
                                   font=("Arial", 24, "bold"))
         self.label.pack(pady=20)
 
@@ -163,5 +178,8 @@ class App(ctk.CTk):
             self.stop_button.configure(state=tk.DISABLED)
 
 if __name__ == "__main__":
-    app = App()
-    app.mainloop()
+    if len(sys.argv) > 1 and sys.argv[1] == '--version':
+        print(f"Webby Version: {get_version()}")
+    else:
+        app = App()
+        app.mainloop()
