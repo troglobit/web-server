@@ -71,22 +71,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Extract version from tag
-      id: extract_version
-      run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-
-    - name: Generate Changelog
-      id: generate_changelog
-      run: |
-        echo "## Changes" > release.md
-        git log $(git describe --tags --abbrev=0 @^)..@ --pretty=format:"%h - %s (%an, %ad)" --date=short >> release.md
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: dist/
+        merge: true
 
     - name: Create and Upload Release
       uses: ncipollo/release-action@v1
       with:
-        name: Webby v${{ env.version }}
-        tag: ${{ github.ref }}
-        bodyFile: release.md
+        name: Webby ${{ github.ref_name }}
+        body: "Automatically generated release notes."
+        generateReleaseNotes: true
         artifacts: |
           dist/webby.exe
           dist/webby
