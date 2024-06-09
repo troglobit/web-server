@@ -27,7 +27,7 @@ jobs:
         pip install pyinstaller
 
     - name: Build executable
-      run: pyinstaller -F webby.spec
+      run: pyinstaller webby.spec
 
     - name: Verify executable exists
       run: if not exist dist\webby\webby.exe echo "Executable not found!" && exit 1
@@ -58,7 +58,7 @@ jobs:
         pip install pyinstaller
 
     - name: Build executable
-      run: pyinstaller -F webby.spec
+      run: pyinstaller webby.spec
 
     - name: Verify executable exists
       run: |
