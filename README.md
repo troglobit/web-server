@@ -3,6 +3,8 @@
 Webby is a simple web server with a user-friendly UI, built with Python
 and [CustomTkInter][1] for the full cross-platform experience.
 
+![](screenshot.png)
+
 It is recommended to use Python3 virtual environment for 3rd party
 software.  This ensures proper versions of all dependencies are used,
 without leaking over to other programs.
