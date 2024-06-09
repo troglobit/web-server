@@ -84,6 +84,6 @@ jobs:
         body: "Automatically generated release notes."
         generateReleaseNotes: true
         artifacts: |
-          dist/webby.exe
-          dist/webby
+          dist/webby/webby.exe
+          dist/webby/webby
         token: ${{ secrets.GITHUB_TOKEN }}
