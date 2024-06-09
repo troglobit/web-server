@@ -1,7 +1,7 @@
-# Simple Web Server
+# The Webby Server
 
-This is a simple web server with a user-friendly UI, built with Python
-and the [CustomTkInter][1] library.
+Webby is a simple web server with a user-friendly UI, built with Python
+and [CustomTkInter][1] for the full cross-platform experience.
 
 It is recommended to use Python3 virtual environment for 3rd party
 software.  This ensures proper versions of all dependencies are used,

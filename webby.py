@@ -1,5 +1,5 @@
 """
-Simple web server with a user friendly GUI
+Webby is a simple web server with a user friendly GUI
 
 Copyright (c) 2024  Joachim Wiberg <troglobit@gmail.com>
 
