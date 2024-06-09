@@ -4,9 +4,8 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build-windows:
@@ -19,7 +18,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.x' # Specify your Python version here
+        python-version: '3.x'
 
     - name: Install dependencies
       run: |
@@ -46,7 +45,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.x' # Specify your Python version here
+        python-version: '3.x'
 
     - name: Install dependencies
       run: |
@@ -62,3 +61,54 @@ jobs:
       with:
         name: webby_linux
         path: dist/webby
+
+  create-release:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Extract version from tag
+      id: extract_version
+      run: echo "::set-output name=version::${GITHUB_REF#refs/tags/}"
+
+    - name: Generate Changelog
+      id: generate_changelog
+      run: |
+        echo "## Changes" > CHANGELOG.md
+        git log $(git describe --tags --abbrev=0 @^)..@ --pretty=format:"%h - %s (%an, %ad)" --date=short >> CHANGELOG.md
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body_path: CHANGELOG.md
+        draft: false
+        prerelease: false
+
+    - name: Upload Windows artifact
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: dist/webby.exe
+        asset_name: webby_windows.exe
+        asset_content_type: application/octet-stream
+
+    - name: Upload Linux artifact
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: dist/webby
+        asset_name: webby_linux
+        asset_content_type: application/octet-stream
