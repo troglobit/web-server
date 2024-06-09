@@ -19,7 +19,7 @@ jobs:
         spec: 'webby.spec'
         requirements: 'requirements.txt'
         exe_path: 'dist/webby/webby.exe'
-        upload_exe_with_name: 'webby'
+        upload_exe_with_name: 'webby.exe'
 
   build-linux:
     runs-on: ubuntu-latest
