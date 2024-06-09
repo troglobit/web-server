@@ -29,6 +29,10 @@ jobs:
     - name: Build executable
       run: pyinstaller webby.spec
 
+    - name: Verify executable exists
+      run: |
+        if not exist dist\webby.exe echo "Executable not found!" & exit 1
+
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
@@ -55,6 +59,12 @@ jobs:
 
     - name: Build executable
       run: pyinstaller webby.spec
+
+    - name: Verify executable exists
+      run: |
+        if [ ! -f dist/webby ]; then
+            echo "Executable not found!" && exit 1;
+        fi
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
