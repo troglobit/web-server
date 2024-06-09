@@ -19,7 +19,7 @@ jobs:
         spec: 'webby.spec'
         requirements: 'requirements.txt'
         exe_path: 'dist/webby/webby.exe'
-        upload_exe_with_name: 'webby.exe'
+        upload_exe_with_name: 'webby'
 
   build-linux:
     runs-on: ubuntu-latest
@@ -53,7 +53,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: webby
-        path: dist/webby/webby
+        path: dist/webby/
 
   create-release:
     needs: [build-windows, build-linux]
@@ -77,6 +77,6 @@ jobs:
         body: "Automatically generated release notes."
         generateReleaseNotes: true
         artifacts: |
-          webby.exe
-          webby
+          webby/webby.exe
+          webby/webby
         token: ${{ secrets.GITHUB_TOKEN }}
