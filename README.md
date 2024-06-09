@@ -10,8 +10,8 @@ without leaking over to other programs.
 Set up venv and source `activate`:
 
 ```
-~/src/web-server(main)$ python -m venv .venv
-~/src/web-server(main)$ source .venv/bin/activate
+~/src/webby(main)$ python -m venv .venv
+~/src/webby(main)$ source .venv/bin/activate
 ```
 
 Calling the <cmd>python</cmd> command from now on (in this terminal)
@@ -19,11 +19,20 @@ uses the `.venv/bin/python`, same with the <cmd>pip</cmd> command which
 we'll now use to install the requirements:
 
 ```
-~/src/web-server(main)$ pip install -r requirements.txt
+~/src/webby(main)$ pip install -r requirements.txt
 ...
 ```
 
 > When done, call `deactivate` to "detach" from the venv.
 
+## Updating
+
+When adding new features to the project, remember to update the file
+`requirements.txt` using:
+
+```
+~/src/webby(main)$ pip freeze > requirements.txt
+...
+```
 
 [1]: https://customtkinter.tomschimansky.com/
