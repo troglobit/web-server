@@ -27,12 +27,12 @@ jobs:
         pip install pyinstaller
 
     - name: Build executable
-      run: pyinstaller --onefile webby.py
+      run: pyinstaller webby.spec
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: webby_windows
+        name: webby.exe
         path: dist/webby.exe
 
   build-linux:
@@ -54,12 +54,12 @@ jobs:
         pip install pyinstaller
 
     - name: Build executable
-      run: pyinstaller --onefile webby.py
+      run: pyinstaller webby.spec
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: webby_linux
+        name: webby
         path: dist/webby
 
   create-release:
