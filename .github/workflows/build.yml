@@ -63,12 +63,11 @@ jobs:
     - name: Download artifacts
       uses: actions/download-artifact@v4
       with:
-        path: dist/
         merge-multiple: true
 
     - name: Verify artifacts
       run: |
-        ls -lR dist/
+        ls -lR .
 
     - name: Create and Upload Release
       uses: ncipollo/release-action@v1
@@ -77,6 +76,6 @@ jobs:
         body: "Automatically generated release notes."
         generateReleaseNotes: true
         artifacts: |
-          dist/webby.exe
-          dist/webby
+          webby.exe
+          webby
         token: ${{ secrets.GITHUB_TOKEN }}
