@@ -18,6 +18,7 @@ jobs:
         python_ver: '3.12'
         spec: 'webby.spec'
         requirements: 'requirements.txt'
+        exe_path: 'dist/webby/webby.exe'
         upload_exe_with_name: 'webby.exe'
 
   build-linux:
