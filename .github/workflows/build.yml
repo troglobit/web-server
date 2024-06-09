@@ -30,8 +30,8 @@ jobs:
       run: pyinstaller webby.spec
 
     - name: Verify executable exists
-      run: |
-        if not exist dist\webby.exe echo "Executable not found!" & exit 1
+      run: if not exist dist\webby.exe echo "Executable not found!" && exit 1
+      shell: cmd
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
@@ -62,6 +62,7 @@ jobs:
 
     - name: Verify executable exists
       run: |
+        ls -lRt
         if [ ! -f dist/webby ]; then
             echo "Executable not found!" && exit 1;
         fi
